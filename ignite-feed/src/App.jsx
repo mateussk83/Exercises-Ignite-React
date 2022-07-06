@@ -1,20 +1,19 @@
-import { Header } from './Header';
-import { Post } from './Post';
+import { Header } from './components/Header'
+import { Sidebar } from './components/Sidebar'
+import { Post } from './Post.jsx'
 
-import styles from './App.module.css'
+import styles from './App.module.css';
 
 import './global.css';
 
-function App() {
+export function App() {
 
   return ( 
     <div>
       <Header />
 
       <div className={styles.wrapper}>
-      <aside>
-    Sidebar
-      </aside>
+      <Sidebar />
       <main>
         <Post 
         author="Diego Fernandes" 
@@ -30,5 +29,3 @@ function App() {
 
   )
 }
-
-export default App
