@@ -1,4 +1,4 @@
- /*
+/*
 margin 2rem auto -> para ficar centralizado
 padding -> quando a tela diminuir ficar com o espaçamento de 16 pix 
 grid = colunas 
@@ -14,4 +14,16 @@ colocando align-items: flex-start; ele se inicia do topo o padrao é que ele ten
   grid-template-columns: 256px 1fr;
   gap: 2rem;
   align-items: flex-start;
+}
+
+/*
+quando a tela for menor do que 768 px entao vai mudar isso
+*/
+@media (max-width: 768px) {
+  html {
+    font-size: 87,5%;
+  }
+  .wrapper {
+    grid-template-columns: 1fr;
+  }
 }

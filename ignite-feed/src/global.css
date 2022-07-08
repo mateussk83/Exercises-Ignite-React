@@ -10,9 +10,17 @@
   --gray-900: #121214;
 
   --green-500: #00875f;
+  --green-300: #00837E;
 
+  --red-500: #F75A68;
 }
-
+/*
+focus é quando vc aperta o tab ele fica com uma borda padrao meio rosada entao utiliza no focus o box-shadow para a barra ficar verdinha 
+*/
+:focus {
+  outline: transparent;
+  box-shadow: 0 0 0 2px var(--green-500);
+}
 * {
   margin: 0;
   padding: 0;

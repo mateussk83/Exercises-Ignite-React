@@ -26,18 +26,6 @@ se usa negativo quando queremos colocar uma em cima da outra
 
   margin-top: -2rem;
 }
-/*
-box-sizing: initial para a imagem passar do tamanho da borda pq geralmente se utilziar o box-sizing: border-box para diminuir o conteudo dentro para caber dentro da box  e o outline pra ter uma linha depois da borda
-*/
-.avatar {
-  box-sizing: initial;
-  width: 3rem;
-  height: 3rem;
-  border-radius: 8px;
-  
-  border: 4px solid var(--gray-800);
-  outline: 2px solid var(--green-500);
-}
 
 .profile strong {
   margin-top: 1rem;
