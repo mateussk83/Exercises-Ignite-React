@@ -35,6 +35,14 @@ const comments = [
 // e para dizer que aquela variavel é um estado basta colocar const [ nome da variavel, e uma função que fica monitorando e fala quando o react vai agir e fala oq vai acontecer com a variavel = useState([e como a variavel esta no momento])
 
 // onChange diz que vai executar toda vez que ele digitar algo na textarea
+
+// existe 3 momentos em que um componente é renderizado novamente no react.
+
+// 1. quando o estado altera;    // montiromento de componente
+// 2. quando a propriedade altera; // quando o author, publishedAt, content etc...
+// 3. quando um ponente pai renderiza novamente;
+
+// a key serve para nao precisar renderizar o codigo inteiro supondo que temos 500 posts e não dois como a aplicação é muito grande renderizar o codigo todo toda vez que tiver uma alteração entao usamos a key pra dizer pro react que ela vai alterar apenas aquele post nao todos os posts 
 export function Post({ author, publishedAt, content }) {
 
   const [comments, setComments] = useState([
@@ -69,7 +77,18 @@ export function Post({ author, publishedAt, content }) {
   }
 
 
+  function deleteComment(commentToDelete) {
+    // imutabilidade -> as variaveis não sofrem mutação, nós criamos um novo valor (um novo espaço na memória)
+    // filters -> é uma função do javascript que diz se aquele comentario tem que continuar ou ser removido se ele returnar true permanece na lista se retornar false ele remove da lista.
+    // aqui eu digo para deixar na lista appenas os comentarios que forem diferente do commentToDelete 
+    const commentsWithoutDeletedOne = comments.filter(comment => {
+      return (comment !== commentToDelete)
 
+      
+    })
+    setComments(commentsWithoutDeletedOne);
+  }
+  // Toda vez que for demonstrar um component list como o Comments precisa da variavel key que passa um valor unico de identificação
   return (
     <article className={styles.Post}>
       <header>
@@ -91,10 +110,11 @@ export function Post({ author, publishedAt, content }) {
       <div className={styles.content}>
         {content.map(line => {
           if (line.type == 'pharagraph') {
-            return <p>{line.content}</p>
+            return <p key={line.content}>{line.content}</p>
           }
-          else if (line.type == 'link')
-            return <p><a href="">{line.content}</a></p>
+          else if (line.type == 'link') {
+            return <p key={line.content}><a href="">{line.content}</a></p>
+          }
         })}
       </div>
 
@@ -117,7 +137,11 @@ export function Post({ author, publishedAt, content }) {
       <div className={styles.commentList}>
 
         {comments.map(comment => {
-          return <Comment content={comment} />
+          return (<Comment
+            content={comment}
+            key={comment}
+            onDeleteComment={deleteComment}
+          />)
         })}
       </div>
     </article>

@@ -40,8 +40,9 @@ const posts = [
     publishedAt: new Date('2022-06-07 20:00:00'),
   },
 ];
-export function App() {
 
+export function App() {
+  // o react precisa que declaramos uma variave chamada pra key pra todo component que envia uma lista de interação que fala pra o react qual é a informação que vai torna-la unica neste caso o id cada post tem um determinado id
   return (
     <div>
       <Header />
@@ -51,6 +52,7 @@ export function App() {
         <main>
           {posts.map(post => {
             return (<Post
+              key={post.id}
               author={post.author}
               content={post.content}
               publishedAt={post.publishedAt}
