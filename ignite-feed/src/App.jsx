@@ -6,8 +6,6 @@ import styles from './App.module.css';
 
 import './global.css';
 
-
-// forEach -> percorre o array porem nao tem return ja o map retorna algo quando ele percorre o array oq ele encontrou 
 const posts = [
   {
     id: 1,
@@ -42,7 +40,6 @@ const posts = [
 ];
 
 export function App() {
-  // o react precisa que declaramos uma variave chamada pra key pra todo component que envia uma lista de interação que fala pra o react qual é a informação que vai torna-la unica neste caso o id cada post tem um determinado id
   return (
     <div>
       <Header />
