@@ -1,0 +1,135 @@
+.Post {
+  background: var(--gray-800);
+  border-radius: 8px;
+  padding: 2.5rem;
+}
+/*
+o + significa todo post que tenho um outro post antes dele vai ser estilizado
+*/
+.Post + .Post {
+  margin-top: 2rem;
+}
+
+.content {
+  line-height: 1.6;
+  color: var(--gray-300);
+  margin-top: 1.5rem;
+}
+
+.content p {
+  margin-top: 1rem;
+}
+
+.content a {
+  font-weight: bold;
+  color: var(--green-500);
+  text-decoration: none;
+}
+
+.content a:hover {
+  background: var(--green-300);
+  color: var(--white);
+}
+/*
+serve para buscar apenas todos os headers que estao no primeiro nivel do Post 
+*/
+.Post > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.Post > header time {
+  font-size: 0.875rem;
+  color: var(gray-400);
+}
+
+.author {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.authorInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.authorInfo strong {
+  color: var(--gray-100);
+  line-height: 1.6;
+}
+
+.authorInfo span {
+  font-size: 0.875rem;
+  color: var(--gray-400);
+  line-height: 1.6;
+}
+/*
+coomentForm nao tem por padrão um width 100%
+*/
+.commentForm {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--gray-600);
+}
+
+.commentForm > strong {
+  line-height: 1.6;
+  color: var(--gray-100);
+}
+
+.commentForm textarea {
+  width: 100%;
+  background: var(--gray-900);
+  border: 0;
+  resize: none;
+  height: 6rem;
+  padding: 1rem;
+  border-radius: 8px;
+  color: var(--gray-100);
+  line-height: 1.4;
+  margin-top: 1rem;
+}
+/*
+quando tem visibility: hidden; e o max-height: 0; ele desaparece
+*/
+.commentForm footer {
+  visibility: hidden;
+  max-height: 0;
+}
+/*
+ele diz se estiver qualquer foco dentro do text area ou qualquer elemento dentro do footer 
+*/
+.commentForm:focus-within footer {
+  visibility: visible;
+  max-height: none;
+}
+
+.commentForm button[type='submit'] {
+  padding: 1rem 1.5rem;
+  margin-top: 1rem;
+  border-radius: 8px;
+  border: 0;
+  background: var(--green-500);
+  color: var(--white);
+  font-weight: bold;
+  cursos: pointer;
+  transition: backgroundcolor 0.2s;
+}
+/*
+:not(:disabled):hover é quando o disabled nao estiver ativado e estar com o mouse em cima vai acontecer isso
+*/
+.commentForm button[type='submit']:not(:disabled):hover {
+  background: var(--green-300);
+}
+
+.commentForm button[type='submit']:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.commentList {
+  margin-top: 2rem;
+}
