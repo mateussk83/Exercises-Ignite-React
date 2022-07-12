@@ -43,6 +43,8 @@ const comments = [
 // 3. quando um ponente pai renderiza novamente;
 
 // a key serve para nao precisar renderizar o codigo inteiro supondo que temos 500 posts e não dois como a aplicação é muito grande renderizar o codigo todo toda vez que tiver uma alteração entao usamos a key pra dizer pro react que ela vai alterar apenas aquele post nao todos os posts 
+
+// em todo textarea ou imput tem uma propriedade chamada required que valida a mensagem enviada e ai podemos passar uma function como parametro no exemplo do textarea do post colocamos onInvalid={nemCommentInvalid}
 export function Post({ author, publishedAt, content }) {
 
   const [comments, setComments] = useState([
@@ -73,7 +75,14 @@ export function Post({ author, publishedAt, content }) {
   }
   // essa função é ativada toda vez que a text area é preenchida
   function newCommentChange() {
+    // precisa colocar o valor de volta pra '' pq depois que o usuario preencher os requisitos se nao colocar isso ele continua com o erro.
+    event.target.setCustomValidity('');
     setNewCommentText(event.target.value);
+  }
+
+  function newCommentInvalid() {
+    // setCustomValidity é a propriedade que mostra a validação para o usuario caso ele nao passe na validação.
+    event.target.setCustomValidity('Esse campo é obrigatório!');
   }
 
 
@@ -84,10 +93,12 @@ export function Post({ author, publishedAt, content }) {
     const commentsWithoutDeletedOne = comments.filter(comment => {
       return (comment !== commentToDelete)
 
-      
+
     })
     setComments(commentsWithoutDeletedOne);
   }
+
+  const isNewCommentEmpty = newCommentText.length == 0
   // Toda vez que for demonstrar um component list como o Comments precisa da variavel key que passa um valor unico de identificação
   return (
     <article className={styles.Post}>
@@ -127,10 +138,12 @@ export function Post({ author, publishedAt, content }) {
           placeholder="Deixe um comentário"
           value={newCommentText}
           onChange={newCommentChange}
+          onInvalid={newCommentInvalid}
+          required
         />
 
         <footer>
-          <button type="submit">Publicar</button>
+          <button type="submit" disabled={isNewCommentEmpty}>Publicar</button>
         </footer>
       </form>
 

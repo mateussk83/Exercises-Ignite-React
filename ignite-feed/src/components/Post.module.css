@@ -118,9 +118,16 @@ ele diz se estiver qualquer foco dentro do text area ou qualquer elemento dentro
   cursos: pointer;
   transition: backgroundcolor 0.2s;
 }
-
-.commentForm button[type='submit']:hover {
+/*
+:not(:disabled):hover é quando o disabled nao estiver ativado e estar com o mouse em cima vai acontecer isso
+*/
+.commentForm button[type='submit']:not(:disabled):hover {
   background: var(--green-300);
+}
+
+.commentForm button[type='submit']:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
 .commentList {
