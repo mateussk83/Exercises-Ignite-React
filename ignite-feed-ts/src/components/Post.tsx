@@ -1,6 +1,6 @@
 import { format, formatDistanceToNow } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
-import { ChangeEvent, FormEvent, FormEventHandler, InvalidEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, InvalidEvent, useState } from 'react';
 
 import { Avatar } from './Avatar';
 import { Comment } from './Comment';
@@ -15,8 +15,8 @@ interface Author {
 
 // como ele só pode ter estes dois tipos entao podemos ao ives de apenas colocar string colocamos
 interface Content {
-  type: 'pharagraph' | 'link';
-  content: string; 
+  type: string;
+  content: string;
 }
 interface PostProps {
   author: Author;
@@ -81,7 +81,7 @@ export function Post({ author, publishedAt, content }: PostProps) {
   })
 
   // dentro do typescript nao sabemos oq é event entao temos que determinar ele e passar como um parametro e existem varios tipos de evento pre-definidos no ts e usamos dependendo de qual tag esta usando neste exemplo é o form na duvida pesquisa no google tipo onchange typescript react event pra ver qual evento usar
-  function CreateNewComment(event:FormEvent) {
+  function CreateNewComment(event: FormEvent) {
     event.preventDefault()
     // event.target sempre retorna o elemento que esta sendo ativado no evento e se voce colocar nome da variavel e depois o value vai pegar o valor da variavel que esta no evento
     // desta forma é programação imperativa e nao declarativa const newCommentText = event.target.comment.value
@@ -104,7 +104,7 @@ export function Post({ author, publishedAt, content }: PostProps) {
     event.target.setCustomValidity('Esse campo é obrigatório!');
   }
 
-// como era um comentario que eu queria deletar basta usar o string pq não é um evento que eu estou usando 
+  // como era um comentario que eu queria deletar basta usar o string pq não é um evento que eu estou usando 
   function deleteComment(commentToDelete: string) {
     // imutabilidade -> as variaveis não sofrem mutação, nós criamos um novo valor (um novo espaço na memória)
     // filters -> é uma função do javascript que diz se aquele comentario tem que continuar ou ser removido se ele returnar true permanece na lista se retornar false ele remove da lista.

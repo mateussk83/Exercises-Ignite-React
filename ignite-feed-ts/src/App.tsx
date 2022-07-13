@@ -6,6 +6,11 @@ import styles from './App.module.css';
 
 import './global.css';
 
+interface Content {
+  type: 'pharagraph' | 'link';
+  content: string; 
+}
+
 const posts = [
   {
     id: 1,
