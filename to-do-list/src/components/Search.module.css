@@ -1,0 +1,27 @@
+.search {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: -1.68rem;
+}
+
+.search textarea {
+  width: 40rem;
+  padding-top: 1rem;
+  padding-left: 1rem;
+  border-radius: 8px;
+  border: 1px solid var(--gray-700);
+  background: var(--gray-500);
+}
+
+.search button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 16px;
+  border-radius: 8px;
+  background: var(--blue-600);
+  color: var(--gray-100);
+  border: none;
+}

@@ -1,0 +1,13 @@
+.header {
+  width: 100vw;
+  height: 9.375rem;
+  background: var(--gray-700);
+  display: flex;
+  justify-content: center;
+  padding-top: 4.5rem;
+  gap: 12px;
+}
+
+.header img {
+  height: 2rem;
+}

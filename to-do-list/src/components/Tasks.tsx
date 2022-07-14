@@ -1,5 +1,7 @@
 export function Tasks() {
   return (
-    <div></div>
+    <div>
+      <h1>task</h1>
+    </div>
   )
 }

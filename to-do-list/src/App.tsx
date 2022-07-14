@@ -1,16 +1,23 @@
 
-import './App.css'
-import { Header } from './components/Header'
-import { Search } from './components/search'
-import { Tasks } from './components/Tasks'
+import styles from './App.module.css';
+
+import './global.css';
+
+import { Header } from './components/Header';
+import { Search } from './components/Search';
+import { Tasks } from './components/Tasks';
 
 export function App() {
 
   return (
-    <div className="App">
+    <div>
       <Header />
+      <div className={styles.wrapper}>
+      <main>
       <Search />
       <Tasks />
+      </main>
+      </div>
     </div>
   )
 }
