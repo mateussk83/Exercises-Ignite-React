@@ -18,6 +18,9 @@ export function App() {
       <Search />
       <Info />
       <Tasks />
+      <Tasks />
+      <Tasks />
+      <Tasks />
       </main>
       </div>
     </div>

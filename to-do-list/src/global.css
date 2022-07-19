@@ -19,6 +19,7 @@
 }
 
 body {
+  height: 100%;
   background: var(--gray-600);
   color: var(--gray-300);
   -webket-font-smoothing: antialiased;

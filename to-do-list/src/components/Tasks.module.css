@@ -1,0 +1,30 @@
+.tasks {
+  display: flex;
+  justify-content: center;
+  align-items: Inside;
+  margin-left: 19rem;
+  margin-right: 19rem;
+  gap: 12px;
+  margin-top: 0.75rem;
+  background: var(--gray-500);
+  padding: 1rem;
+  border: null;
+  border-radius: 8px;
+}
+
+.tasks button {
+  width: 1.2rem;
+  height: 1.2rem;
+  color: transparent;
+  border: 2px solid var(--blue-300);
+  border-radius: 999px;
+  background: transparent;
+}
+
+.tasks span {
+  font-size: 14px;
+  font-height: 19.6px;
+  color: var(--gray-100);
+  line-height: 1.6;
+  align-items: left;
+}
