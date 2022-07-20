@@ -1,20 +1,21 @@
-.search {
+.task {
   display: flex;
   justify-content: center;
   gap: 0.5rem;
   margin-top: -1.68rem;
 }
 
-.search textarea {
+.task textarea {
   width: 40rem;
   padding-top: 1rem;
   padding-left: 1rem;
   border-radius: 8px;
   border: 1px solid var(--gray-700);
   background: var(--gray-500);
+  color: white;
 }
 
-.search button {
+.task button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -24,4 +25,8 @@
   background: var(--blue-600);
   color: var(--gray-100);
   border: none;
+}
+
+.task button:hover {
+  background: var(--blue-300);
 }

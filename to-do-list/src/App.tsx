@@ -4,23 +4,19 @@ import styles from './App.module.css';
 import './global.css';
 
 import { Header } from './components/Header';
-import { Search } from './components/Search';
-import { Tasks } from './components/Tasks';
+import { Task } from './components/Task';
+import { Home } from './components/Home';
 import { Info } from './components/Info';
 
 export function App() {
+
 
   return (
     <div>
       <Header />
       <div className={styles.wrapper}>
       <main>
-      <Search />
-      <Info />
-      <Tasks />
-      <Tasks />
-      <Tasks />
-      <Tasks />
+      <Home/>
       </main>
       </div>
     </div>
