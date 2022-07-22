@@ -7,14 +7,15 @@ interface TaskProps {
   content: string;
   onAddTask: (task: string) => void;
 }
-export function Task({ content, onAddTask }:TaskProps) {
-  const [ task, setTask ] = useState('');
+export function Task({ content, onAddTask }: TaskProps) {
+  const [task, setTask] = useState('');
   function submitTask() {
-  onAddTask(task);
+    onAddTask(task);
   }
 
   function newTaskChange(event: ChangeEvent<HTMLTextAreaElement>) {
     setTask(event.target.value);
+    event.target.setCustomValidity('');
   }
   return (
     <div className={styles.task}>

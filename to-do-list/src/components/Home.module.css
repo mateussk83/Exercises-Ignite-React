@@ -11,8 +11,7 @@
   border-radius: 8px;
 }
 
-.tasks button {
-
+.statusTask {
   width: 1.2rem;
   height: 1.2rem;
   color: transparent;
@@ -30,7 +29,14 @@
   line-height: 1.6;
   align-items: left;
 }
-.tasks button:hover {
+.statusTask:hover {
   border: 2px solid var(--blue-300);
 }
-
+.deletTask {
+  background: transparent;
+  border: none;
+  color: var(--gray-300);
+}
+.deletTask:hover {
+  color: var(--red-400);
+}
