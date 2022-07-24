@@ -1,30 +1,25 @@
-import styles from './Task.module.css'
-
-import { PlusCircle } from 'phosphor-react';
-import { ChangeEvent, useState } from "react";
+import { Trash } from "phosphor-react";
+import styles from "Task.module.css"
 
 interface TaskProps {
   content: string;
-  onAddTask: (task: string) => void;
 }
-export function Task({ content, onAddTask }: TaskProps) {
-  const [task, setTask] = useState('');
-  function submitTask() {
-    onAddTask(task);
-  }
+export function Task({ content }: TaskProps) {
 
-  function newTaskChange(event: ChangeEvent<HTMLTextAreaElement>) {
-    setTask(event.target.value);
-    event.target.setCustomValidity('');
-  }
+
   return (
-    <div className={styles.task}>
-      <textarea
-        name="task"
-        placeholder="Adicione uma nova tarefa"
-        onChange={newTaskChange}
-      ></textarea>
-      <button onClick={submitTask}>Criar<PlusCircle size={20} color="#ffffff" /></button>
+    <div className={styles.tasks}>
+      <div className={styles.description}>
+        <button className={styles.statusTask}>c</button>
+        <span>
+          {content}
+        </span>
+      </div>
+      <button
+        className={styles.deletTask}
+      >
+        <Trash size={24} className={styles.icon} />
+      </button>
     </div>
   )
 }

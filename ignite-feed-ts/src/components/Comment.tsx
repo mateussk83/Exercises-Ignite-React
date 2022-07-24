@@ -22,7 +22,7 @@ export function Comment({ content, onDeleteComment }: CommentProps) {
   }
 
   function likeComment() {
-    setLikeCount(state => {
+    setLikeCount(state => {3
       return state + 1
     });
   }
