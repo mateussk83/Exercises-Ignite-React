@@ -3,8 +3,9 @@ import styles from './Info.module.css'
 
 interface InfoProps {
     count: number;
+    value: number;
 }
-export function Info({ count }:InfoProps) {
+export function Info({ count, value }:InfoProps) {
   return (
     <div className={styles.info}>
       <div className={styles.createCount}>
@@ -13,7 +14,7 @@ export function Info({ count }:InfoProps) {
       </div>
       <div className={styles.completedCount}>
         <strong>Concluídas</strong>
-        <span>0 de {count}</span>
+        <span>{value} de {count}</span>
       </div>
     </div>
   )

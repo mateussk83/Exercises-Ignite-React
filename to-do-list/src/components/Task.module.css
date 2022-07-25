@@ -17,6 +17,13 @@
   color: var(--gray-300);
 }
 
+.description {
+  padding: 0;
+  display:flex;
+  align-items:center;
+  
+}
+
 .tasks label {
   margin-left: 12px;
   width: 500px;
@@ -67,9 +74,9 @@
   border: 2px solid var(--purple-600);
 }
 
-.tasks input:checked ~ .description {
+.tasks input:checked ~ label {
   color: var(--gray-300);
-  text-decoration: line-through;
+  text-decoration: line-through !important;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
