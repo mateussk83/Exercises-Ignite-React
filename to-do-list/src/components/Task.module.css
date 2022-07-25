@@ -11,6 +11,14 @@
   border-radius: 8px;
 }
 
+.tasks > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
 .deletTask {
   background: transparent;
   border: none;
@@ -19,21 +27,24 @@
 
 .tasks label {
   margin-left: 12px;
-  width: 500px;
+  width: 100%;
+  height: 100%;
   font-size: 14px;
-  font-height: 19.6px;
+  /* font-height: 19.6px; */
   color: var(--gray-100);
   line-height: 1.6;
   align-items: left;
 }
 
 .deletTask:hover {
+  cursor: pointer;
   color: var(--red-400);
 }
 
 /* Hide the browser's default checkbox */
 .tasks input {
   opacity: 0;
+  visibility: hidden;
   cursor: pointer;
   height: 0;
   width: 0;
@@ -45,6 +56,7 @@
   align-items: center;
   flex-direction: row-reverse;
 }
+
 /* Create a custom checkbox */
 .checkmark {
   position: relative;
@@ -57,11 +69,12 @@
   border-radius: 50%;
 }
 
-.tasks:hover input ~ .checkmark {
+.tasks:hover .checkmark {
+  cursor: pointer;
   border: 2px solid var(--blue-300);
 }
 
-.tasks input:checked ~ .checkmark {
+.tasks input:checked ~ .description .checkmark {
   background-color: var(--purple-600);
   color: var(--gray-600);
   border: 2px solid var(--purple-600);
@@ -74,13 +87,13 @@
 
 /* Create the checkmark/indicator (hidden when not checked) */
 .checkmark:after {
-  content: '';
+  content: "";
   position: absolute;
   display: none;
 }
 
 /* Show the checkmark when checked */
-.tasks input:checked ~ .checkmark:after {
+.tasks input:checked ~ .description .checkmark:after {
   display: block;
 }
 
