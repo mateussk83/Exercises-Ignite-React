@@ -1,22 +1,29 @@
 import { Trash } from "phosphor-react";
-import styles from "Task.module.css"
+import { useState } from "react";
+import styles from "./Task.module.css"
 
 interface TaskProps {
   content: string;
+  onDeleteTask: (task: string) => void;
 }
-export function Task({ content }: TaskProps) {
+export function Task({ content, onDeleteTask }: TaskProps) {
+  const [task, setTask] = useState('');
+  function submitTask() {
+    onDeleteTask(content);
+  }
 
 
   return (
     <div className={styles.tasks}>
-      <div className={styles.description}>
-        <button className={styles.statusTask}>c</button>
-        <span>
-          {content}
-        </span>
+      <div>
+        <label htmlFor="checked" className={styles.description}>{content}
+          <input type='checkbox' id="checked" className={styles.statusTask} />
+          <span className={styles.checkmark}></span>
+        </label>
       </div>
       <button
         className={styles.deletTask}
+        onClick={submitTask}
       >
         <Trash size={24} className={styles.icon} />
       </button>

@@ -3,8 +3,8 @@
 import { Trash } from 'phosphor-react'
 import { ChangeEvent, useState } from 'react'
 import { Info } from './Info';
-import { NewTask } from './newTask';
-import styles from './Home.module.css'
+import { NewTask } from './NewTask';
+import styles from './Home.module.css';
 import { Task } from './Task';
 
 export function Home() {
@@ -34,7 +34,7 @@ export function Home() {
         return (
           <Task
             content={taskNow}
-
+            onDeleteTask={DeleteTask}
           />
         )
       })}
