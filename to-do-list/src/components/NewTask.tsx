@@ -8,7 +8,7 @@ interface TaskProps {
 }
 export function NewTask({ onAddTask }: TaskProps) {
   const [task, setTask] = useState('');
-  function submitTask(event: ChangeEvent<HTMLTextAreaElement>) {
+  function submitTask() {
     onAddTask(task);
   }
   function newTaskInvalid(event: InvalidEvent<HTMLTextAreaElement>) {
@@ -27,7 +27,7 @@ export function NewTask({ onAddTask }: TaskProps) {
         onInvalid={newTaskInvalid}
         required
       />
-      <button onClick={submitTask}>Criar<PlusCircle size={20} color="#ffffff" /></button>
+      <button onClick={submitTask} >Criar<PlusCircle size={20} color="#ffffff" /></button>
     </div>
   )
 }

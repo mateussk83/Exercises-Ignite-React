@@ -6,13 +6,15 @@ interface TaskProps {
   content: string;
   onDeleteTask: (task: string) => void;
   onCountCheck: (count: boolean) => void;
+  id: number;
 }
-export function Task({ content, onDeleteTask, onCountCheck }: TaskProps) {
+export function Task({ content, onDeleteTask, onCountCheck, id }: TaskProps) {
+  const [idTask] = useState(id)
+  const [task] = useState(content)
   function submitTask() {
     onDeleteTask(content);
   }
-
-  function Onchecked(event: React.ChangeEvent<HTMLInputElement>) {
+  function Onchecked(event: React.FocusEvent<HTMLInputElement>) {
     const value = event.target.checked;
     if (value == true) {
       onCountCheck(value);
@@ -20,15 +22,15 @@ export function Task({ content, onDeleteTask, onCountCheck }: TaskProps) {
     else {
       onCountCheck(false);
     }
-    
+
   }
 
   return (
     <div className={styles.tasks}>
-      <div className={styles.description}>
-        <input type='checkbox' id="checked" onClick={Onchecked} className={styles.statusTask} />
+      <div className={styles.description}  >
+        <input type='checkbox' id={idTask.toString()} onChange={Onchecked} className={styles.statusTask} />
         <span className={styles.checkmark}></span>
-        <label htmlFor="checked">{content}</label>
+        <label htmlFor={idTask.toString()}>{task}</label>
       </div>
       <button
         className={styles.deletTask}

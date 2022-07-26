@@ -19,9 +19,8 @@
 
 .description {
   padding: 0;
-  display:flex;
-  align-items:center;
-  
+  display: flex;
+  align-items: center;
 }
 
 .tasks label {
@@ -76,7 +75,7 @@
 
 .tasks input:checked ~ label {
   color: var(--gray-300);
-  text-decoration: line-through !important;
+  text-decoration: line-through;
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */

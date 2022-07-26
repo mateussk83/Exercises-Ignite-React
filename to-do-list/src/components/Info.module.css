@@ -18,9 +18,9 @@
 }
 
 .info strong {
-  font-size: 14px;
   line-height: 16px;
   color: var(--blue-300);
+  font-size: 14px;
 }
 
 .info span {
@@ -32,4 +32,10 @@
   pading-top: 2px;
   border: none;
   border-radius: 999px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+}
+
+.info .completedCount strong {
+  color: var(--purple-300);
 }

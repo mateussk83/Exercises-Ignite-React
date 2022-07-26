@@ -13,6 +13,7 @@ export function Home() {
   ])
   const [onCheck, setOnCheck] = useState(0)
 
+  const [count, setCount] = useState(1)
   function countCheck(value: boolean,) {
     if (value == true) {
       setOnCheck(onCheck + 1)
@@ -22,10 +23,10 @@ export function Home() {
     }
   }
 
-
   function CreateNewTask(taskToAdd: string) {
     setTasks([...tasks, taskToAdd]);
     taskToAdd = ""
+    setCount(count + 1);
   }
   function DeleteTask(taskToDelete: string) {
     const TaskWithoutDeletedOne = tasks.filter(task => {
@@ -43,9 +44,10 @@ export function Home() {
         value={onCheck}
       />
       {tasks.map(taskNow => {
-        
+
         return (
           <Task
+            id={count}
             content={taskNow}
             onDeleteTask={DeleteTask}
             onCountCheck={countCheck}
