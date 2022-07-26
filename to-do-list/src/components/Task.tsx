@@ -8,18 +8,25 @@ interface TaskProps {
   onCountCheck: (count: boolean) => void;
 }
 export function Task({ content, onDeleteTask, onCountCheck }: TaskProps) {
+
+  const body = document.querySelector('body')
+
   function submitTask() {
     onDeleteTask(content);
   }
 
   function Onchecked(event: React.ChangeEvent<HTMLInputElement>) {
     const value = event.target.checked;
+
+    
+
     if (value == true) {
       onCountCheck(value);
     }
     else {
       onCountCheck(false);
     }
+    
   }
 
   return (

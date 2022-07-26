@@ -43,6 +43,7 @@ export function Home() {
         value={onCheck}
       />
       {tasks.map(taskNow => {
+        
         return (
           <Task
             content={taskNow}
