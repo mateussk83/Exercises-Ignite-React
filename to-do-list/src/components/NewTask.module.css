@@ -22,11 +22,16 @@
   gap: 0.5rem;
   padding: 16px;
   border-radius: 8px;
-  background: var(--blue-600);
+  background: var(--blue-300);
   color: var(--gray-100);
   border: none;
 }
 
 .task button:hover {
-  background: var(--blue-300);
+}
+
+.task button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  background: var(--blue-600);
 }
