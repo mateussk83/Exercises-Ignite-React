@@ -1,6 +1,6 @@
 
 
-import { Trash } from 'phosphor-react'
+import { ClipboardText, Trash } from 'phosphor-react'
 import { ChangeEvent, useState } from 'react'
 import { Info } from './Info';
 import { NewTask } from './NewTask';
@@ -8,8 +8,7 @@ import styles from './Home.module.css';
 import { Task } from './Task';
 
 export function Home() {
-  const [tasks, setTasks] = useState([
-    'Programar agora só bora'
+  const [tasks, setTasks] = useState(['Programar agora só bora'
   ])
   const [onCheck, setOnCheck] = useState(0)
 
@@ -22,6 +21,8 @@ export function Home() {
       setOnCheck(onCheck - 1)
     }
   }
+
+  
 
   function CreateNewTask(taskToAdd: string) {
     setTasks([...tasks, taskToAdd]);
@@ -43,6 +44,19 @@ export function Home() {
         count={tasks.length}
         value={onCheck}
       />
+      { tasks.length == 0 
+      ? 
+      <div className={styles.noTask}>
+        <div className={styles.icon}>
+        <ClipboardText size={56} color="#3d3d3d" />
+        </div>
+        <div>
+        <strong>Você ainda não tem tarefas cadastradas</strong> 
+        </div>
+        <span>Crie tarefas e organize seus items a fazer</span>
+      </div>    
+      : 
+      <div>
       {tasks.map(taskNow => {
 
         return (
@@ -54,6 +68,9 @@ export function Home() {
           />
         )
       })}
+      </div>
+      }   
+
     </div>
   )
 }

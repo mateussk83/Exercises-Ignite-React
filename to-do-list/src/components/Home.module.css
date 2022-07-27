@@ -1,1 +1,23 @@
+.noTask {
+  margin-top: 24px;
+  display: block;
+ text-align:center;
+  border-top: 1px solid var(--gray-400);
+  border-radius: 8px;
+  padding: 4rem 1.5rem;
+  margin-left: 320px;
+  margin-right: 320px;
+}
 
+.noTask p {
+  font-size:16px;
+  padding-top: 16px;
+  line-height:22.4px;
+}
+
+.icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-bottom:16px;
+}
