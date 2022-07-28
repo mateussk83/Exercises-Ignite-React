@@ -1,7 +1,10 @@
+import { ThemeProvider } from 'styled-components'
+import { defaultTheme } from './themes/default'
 
 export function App() {
   return (
-      <h1>Hello Word</h1>
+      <ThemeProvider theme={defaultTheme}>
+        </ThemeProvider>
   )
 }
 
