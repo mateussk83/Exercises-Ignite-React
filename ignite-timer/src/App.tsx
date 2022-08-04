@@ -1,6 +1,6 @@
 import { BrowserRouter } from 'react-router-dom'
 import { ThemeProvider } from 'styled-components'
-import { GlobalStyle } from './global'
+import { GlobalStyle } from './styles/global'
 import { Router } from './Router'
 import { defaultTheme } from './themes/default'
 
