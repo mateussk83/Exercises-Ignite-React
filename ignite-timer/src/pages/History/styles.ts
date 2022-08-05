@@ -64,3 +64,31 @@ export const HistoryList = styled.div`
     }
   }
 `
+
+const STATUS_COLOR  = {
+  yellow: 'yellow-500',
+  green: 'green-500',
+  red: 'red-500',
+} as const
+// as const diz que o parametro que estamos passando pra yellow, green ou red ele é fixo sempre vai ser este yellow-500 ou green-500 ou red-500 pq se nao colocamos isso ele entende que esse yellow-500 é qualquer string um texto normal
+interface StatusProps {
+  // o keyof typeof STATUS_COLOR -> ta falando que só pode ser o que definimos como key do STATUS_COLOR que neste caso seria yellow, green ou red
+  statusColor: keyof typeof STATUS_COLOR
+}
+
+export const Status = styled.span<StatusProps>`
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  // antes de qualquer conteudo
+  &::before {
+    // conteudo em brando
+    content: '';
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 9999px; 
+    background: ${(props) => props.theme[STATUS_COLOR[props.statusColor]]};
+
+  }
+
+`
