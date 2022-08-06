@@ -1,8 +1,10 @@
 import { Play } from "phosphor-react";
+import { useState } from "react";
 import { CountdownContainer, FormContainer, HomeContainer, MinutesAmountInput, Separator, StartCountdownButton, TaskInput } from "./styles";
 
 /* eslint-disable prettier/prettier */
 export function Home() {
+  const[task, setTask] = useState('');
 
   return (
     <HomeContainer>
@@ -13,6 +15,9 @@ export function Home() {
             id="task" 
             placeholder="Dê um nome para o seu projeto"
             list="task-suggestions"
+            // controled component é conseguir ver o que esta acontecendo no component em tempo real e uma boa pratica este value={task} pq atualiza o valor a toda alteração e mostra para o usuario
+            onChange={(e) => setTask(e.target.value)}
+            value={task}
           />
           
           <datalist id="task-suggestions"
@@ -46,8 +51,12 @@ export function Home() {
           <span>0</span>
           <span>0</span>
         </CountdownContainer>
-
-        <StartCountdownButton disabled type="submit">
+        
+        <StartCountdownButton 
+        // aqui diz que ele estara em disabled somente quando o task for igual a ''
+        disabled={task == ''} 
+        type="submit"
+        >
           <Play size={24} />
           Começar
         </StartCountdownButton>
