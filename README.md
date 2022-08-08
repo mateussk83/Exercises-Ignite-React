@@ -1,1 +1,1 @@
-# Exercises-Ignite-React
+# Projects-Ignite-React
