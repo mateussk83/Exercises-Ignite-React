@@ -1,9 +1,21 @@
+/* eslint-disable prettier/prettier */
 import { Play } from "phosphor-react";
 import { useState } from "react";
 import { CountdownContainer, FormContainer, HomeContainer, MinutesAmountInput, Separator, StartCountdownButton, TaskInput } from "./styles";
 import { useForm } from 'react-hook-form';
+// o import é um pouco diferente pq precisamos colocar o /zod no final que é a biblioteca de validação que estamos utilizando
+import { zodResolver} from '@hookform/resolvers/zod';
+// como ela nao tem um biblioteca default entao precisamos importar exatamente oq iremos utilizar neste caso vamos importar tudo usando script modules
+import * as zod from 'zod';
 
-/* eslint-disable prettier/prettier */
+// aqui é a validação do formulario neste caso como o data que recebemos la na funçaõ handleCreateNewCycle recebe um object com dois parametros a task e o minutesAmount
+const newCycleFormValidationSchema = zod.object({
+  // aqui falamos que a task tem que ser uma string e tem que ter no minimo é um caracter e caso nao tiver mostrar a mensagem'Informe a tarefa'
+  task: zod.string().min(1, 'Informe a tarefa'),
+  MinutesAmount: zod.number().min(5).max(60),
+})
+
+
 
 /* Controlled vs Uncontrolled
   Controlled -> atualiza a tag a todo alteração e evento que acontece por exemplo no input quando colocamos o useState no onChange do input ele fica atualizando a tela inteira a todo momento que acontece uma alteração nele(se uma tecla e clicada ou apagada) utilizar em form simples como este
@@ -15,13 +27,19 @@ export function Home() {
    // register -> ele vai adicionar um input no formulario
    //
    // watch -> eu consigo com este parametro watch ficar monitorando o input que eu quiser em tempo real como o useState
-  const { register, handleSubmit, watch } = useForm()
+  const { register, handleSubmit, watch } = useForm({
+    resolver: zodResolver(newCycleFormValidationSchema),
+  })
 
   function handleCreateNewCycle(data: any) {
     //data -> são os dados do nosso formulario
     console.log(data)
   }
+
+
   const task = watch('task')
+  // aqui diz que ele estara em disabled somente quando o task for igual a ''
+  const isSubmitDisabled = task == ''
 
   return (
     <HomeContainer>
@@ -71,8 +89,7 @@ export function Home() {
         </CountdownContainer>
         
         <StartCountdownButton 
-        // aqui diz que ele estara em disabled somente quando o task for igual a ''
-        disabled={task == ''}
+        disabled={isSubmitDisabled}
         type="submit"
         >
           <Play size={24} />
