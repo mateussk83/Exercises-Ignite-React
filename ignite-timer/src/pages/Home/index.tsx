@@ -25,17 +25,26 @@ interface NewCycleFormData {
 */
 type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>
 
+interface Cycle {
+  id: string
+  task: string
+  minutesAmount: number
+  isActive: boolean
+}
 
 /* Controlled vs Uncontrolled
   Controlled -> atualiza a tag a todo alteração e evento que acontece por exemplo no input quando colocamos o useState no onChange do input ele fica atualizando a tela inteira a todo momento que acontece uma alteração nele(se uma tecla e clicada ou apagada) utilizar em form simples como este
   Uncontrolled -> pega o valor somente quando ele é requisitado por exemplo quando ouver o click no button submit do form
   utilizar em form complexo pelo fato de com o controlled ele fica atualizando o component inteiro todo o tempo ja com o uncontrolled ele só vai atualizar quando houver o submit
-  */
+*/
 export function Home() {
+   const [ cycles, setCycles] = useState<Cycle[]>([])
+   const [ activeCycleId, setActiveCycleId] = useState<string | null>(null)
   // quando utilizamos o useForm é como se estiverssemos criando um novo formulario e o const { é oq queremos estrair deste formulario }
    // register -> ele vai adicionar um input no formulario
    //
    // watch -> eu consigo com este parametro watch ficar monitorando o input que eu quiser em tempo real como o useState
+   // <> dentro dele colocaremos a interface que passa a tipagem
   const { register, handleSubmit, watch, reset } = useForm<NewCycleFormData>({
     resolver: zodResolver(newCycleFormValidationSchema),
     // useForm tbm pode configurar o valor inicial que a variavel vai ter!
@@ -44,14 +53,25 @@ export function Home() {
       minutesAmount: 0,
     }
   })
-
+    //data -> são os dados do nosso formulario  
+    // NewCycleFormData -> é a interface que defini a tipagem do data
   function handleCreateNewCycle(data: NewCycleFormData) {
-    //data -> são os dados do nosso formulario
-    console.log(data)
+    // newCycle: Cycle -> define a tipagem do newCycle com o interface Cycle
+    const newCycle: Cycle = {
+      // ele pega o Date e do date ele pega a diferença da data atual com a data informada
+      id: String(new Date().getTime()),
+      task: data.task,
+      minutesAmount: data.minutesAmount,
+    }
+
+    setCycles((state) => [...cycles, newCycle])
+    setActiveCycleId(newCycle.id)
+
     // reset volta para o valor inicial que foi definido la no defaultValues
     reset()
   }
-
+// aqui ele diz que vai em cycles e procurar o cycle que tenho o id igual ao activeCycleId
+  const activeCycle = cycles.find(cycle => cycle.id == activeCycleId)
 
   const task = watch('task')
   // aqui diz que ele estara em disabled somente quando o task for igual a ''
