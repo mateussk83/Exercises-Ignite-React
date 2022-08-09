@@ -12,9 +12,18 @@ import * as zod from 'zod';
 const newCycleFormValidationSchema = zod.object({
   // aqui falamos que a task tem que ser uma string e tem que ter no minimo é um caracter e caso nao tiver mostrar a mensagem'Informe a tarefa'
   task: zod.string().min(1, 'Informe a tarefa'),
-  MinutesAmount: zod.number().min(5).max(60),
+  minutesAmount: zod.number().min(5).max(60),
 })
 
+// sempre que queremos referenciar algo do javascript dentro do typescript utilizamos typeof 
+// aqui estamos criando a interface do typescript porem utilizando zod e o objeto NewCycleFormDataValidationSchema como referencia para tipagem de task e minutesAmount se torna mesma coisa do que 
+/*
+interface NewCycleFormData {
+  task: string;
+  minutesAmount: number;
+}
+*/
+type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>
 
 
 /* Controlled vs Uncontrolled
@@ -27,13 +36,20 @@ export function Home() {
    // register -> ele vai adicionar um input no formulario
    //
    // watch -> eu consigo com este parametro watch ficar monitorando o input que eu quiser em tempo real como o useState
-  const { register, handleSubmit, watch } = useForm({
+  const { register, handleSubmit, watch, reset } = useForm<NewCycleFormData>({
     resolver: zodResolver(newCycleFormValidationSchema),
+    // useForm tbm pode configurar o valor inicial que a variavel vai ter!
+    defaultValues: {
+      task: '',
+      minutesAmount: 0,
+    }
   })
 
-  function handleCreateNewCycle(data: any) {
+  function handleCreateNewCycle(data: NewCycleFormData) {
     //data -> são os dados do nosso formulario
     console.log(data)
+    // reset volta para o valor inicial que foi definido la no defaultValues
+    reset()
   }
 
 
