@@ -1,12 +1,13 @@
 /* eslint-disable prettier/prettier */
 import { Play } from "phosphor-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CountdownContainer, FormContainer, HomeContainer, MinutesAmountInput, Separator, StartCountdownButton, TaskInput } from "./styles";
 import { useForm } from 'react-hook-form';
 // o import é um pouco diferente pq precisamos colocar o /zod no final que é a biblioteca de validação que estamos utilizando
 import { zodResolver} from '@hookform/resolvers/zod';
 // como ela nao tem um biblioteca default entao precisamos importar exatamente oq iremos utilizar neste caso vamos importar tudo usando script modules
 import * as zod from 'zod';
+import { differenceInSeconds } from "date-fns";
 
 // aqui é a validação do formulario neste caso como o data que recebemos la na funçaõ handleCreateNewCycle recebe um object com dois parametros a task e o minutesAmount
 const newCycleFormValidationSchema = zod.object({
@@ -29,7 +30,7 @@ interface Cycle {
   id: string
   task: string
   minutesAmount: number
-  isActive: boolean
+  startDate: Date
 }
 
 /* Controlled vs Uncontrolled
@@ -40,9 +41,9 @@ interface Cycle {
 export function Home() {
    const [ cycles, setCycles] = useState<Cycle[]>([])
    const [ activeCycleId, setActiveCycleId] = useState<string | null>(null)
+   const [ amountSecondsPassed, setAmountSecondsPassed ] = useState(0)
   // quando utilizamos o useForm é como se estiverssemos criando um novo formulario e o const { é oq queremos estrair deste formulario }
    // register -> ele vai adicionar um input no formulario
-   //
    // watch -> eu consigo com este parametro watch ficar monitorando o input que eu quiser em tempo real como o useState
    // <> dentro dele colocaremos a interface que passa a tipagem
   const { register, handleSubmit, watch, reset } = useForm<NewCycleFormData>({
@@ -53,6 +54,19 @@ export function Home() {
       minutesAmount: 0,
     }
   })
+// aqui ele diz que vai em cycles e procurar o cycle que tenho o id igual ao activeCycleId
+const activeCycle = cycles.find(cycle => cycle.id == activeCycleId)
+// useEffect serve para vc ficar monitorando uma variavel e toda vez que ela for alterada fazer o que esta dentro do {} dnv
+  useEffect(() => {
+    // se eu tiver um ciclo ativo
+    if(activeCycle) {
+      setInterval(() => {
+        // differenceInfSeconds é uma função do date-fns que permite subtrair em segundo a diferença das duas datas
+        setAmountSecondsPassed(differenceInSeconds(new Date(), activeCycle.startDate),
+        )
+      }, 1000)
+    }
+  }, [activeCycle])
     //data -> são os dados do nosso formulario  
     // NewCycleFormData -> é a interface que defini a tipagem do data
   function handleCreateNewCycle(data: NewCycleFormData) {
@@ -62,6 +76,7 @@ export function Home() {
       id: String(new Date().getTime()),
       task: data.task,
       minutesAmount: data.minutesAmount,
+      startDate: new Date()
     }
 
     setCycles((state) => [...cycles, newCycle])
@@ -70,11 +85,20 @@ export function Home() {
     // reset volta para o valor inicial que foi definido la no defaultValues
     reset()
   }
-// aqui ele diz que vai em cycles e procurar o cycle que tenho o id igual ao activeCycleId
-  const activeCycle = cycles.find(cycle => cycle.id == activeCycleId)
+// se active cycle estiver com algum id entao pega dentro dele o minutes amount e multiplica por 60 se nao vai ser 0
+  const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
+// esta constante fala se tiver algum valor em activeCycle entao pega o total de segundos e subtrai com o tanto de segundos que ja passou se nao tive nada em active cycle entao é 0
+  const currentSeconds = activeCycle ? totalSeconds - amountSecondsPassed : 0
+// dentro do math temos tres utilização importante pra arredondar o floor que arredonda pra baixo o ceil que sempre arredonda pra cima e o round arredonda quando tiver mais de .5
+  const minutesAmount = Math.floor(currentSeconds / 60)
+  // resto da divisão de 60
+  const secondsAmount = currentSeconds % 60 
 
-  const task = watch('task')
+  // padStart preenche uma string até um padrão especifico, neste caso diz sempre a variavel de minutes vai ter 2 caracteres se nao tiver ela vai colocar 0 no começo da string até completar ela
+const minutes = String(minutesAmount).padStart(2, '0')
+const seconds = String(secondsAmount).padStart(2, '0')
   // aqui diz que ele estara em disabled somente quando o task for igual a ''
+  const task = watch('task')
   const isSubmitDisabled = task == ''
 
   return (
@@ -117,11 +141,11 @@ export function Home() {
         </FormContainer>
 
         <CountdownContainer>
-          <span>0</span>
-          <span>0</span>
+          <span>{minutes[0]}</span>
+          <span>{minutes[1]}</span>
           <Separator>:</Separator>
-          <span>0</span>
-          <span>0</span>
+          <span>{seconds[0]}</span>
+          <span>{seconds[1]}</span>
         </CountdownContainer>
         
         <StartCountdownButton 
