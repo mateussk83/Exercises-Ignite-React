@@ -104,6 +104,12 @@ export function Home() {
   // padStart preenche uma string até um padrão especifico, neste caso diz sempre a variavel de minutes vai ter 2 caracteres se nao tiver ela vai colocar 0 no começo da string até completar ela
   const minutes = String(minutesAmount).padStart(2, '0')
   const seconds = String(secondsAmount).padStart(2, '0')
+// aqui estamos colocando la no title os segundos e os minutos do timer para caso quisermos entrar em outra page ainda sim conseguir ver o timer
+  useEffect(() => {
+    if (activeCycle) {
+    document.title=`${minutes}:${seconds}`
+  }
+  }, [minutes, seconds, activeCycle])
   // aqui diz que ele estara em disabled somente quando o task for igual a ''
   const task = watch('task')
   const isSubmitDisabled = task == ''
