@@ -32,6 +32,7 @@ interface Cycle {
   minutesAmount: number
   startDate: Date
   interruptedDate?: Date
+  finishedDate?: Date
 }
 
 /* Controlled vs Uncontrolled
@@ -58,22 +59,44 @@ export function Home() {
   // aqui ele diz que vai em cycles e procurar o cycle que tenho o id igual ao activeCycleId
   const activeCycle = cycles.find(cycle => cycle.id == activeCycleId)
   // useEffect serve para vc ficar monitorando uma variavel e toda vez que ela for alterada fazer o que esta dentro do {} dnv
+  // se active cycle estiver com algum id entao pega dentro dele o minutes amount e multiplica por 60 se nao vai ser 0
+  const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
   useEffect(() => {
     let interval: number;
 
     // se eu tiver um ciclo ativo
     if (activeCycle) {
       interval = setInterval(() => {
-        // differenceInfSeconds é uma função do date-fns que permite subtrair em segundo a diferença das duas datas
-        setAmountSecondsPassed(differenceInSeconds(new Date(), activeCycle.startDate),
+        const secondsDifference = differenceInSeconds(
+          new Date(), 
+          activeCycle.startDate
         )
+
+        if (secondsDifference >= totalSeconds) {
+          setCycles((state) =>
+            state.map((cycle) => {
+            if(cycle.id == activeCycleId) {
+              return {...cycle, finishedDate: new Date() }
+            } else {
+              return cycle
+            }
+          }),
+          )
+
+          setAmountSecondsPassed(totalSeconds)
+
+          clearInterval(interval)
+        } else {
+        // differenceInfSeconds é uma função do date-fns que permite subtrair em segundo a diferença das duas datas
+        setAmountSecondsPassed(secondsDifference)
+        }
       }, 1000)
     }
     // o useEffect pode retornar uma função que geralmente utilizamos para limpar o próprio useEffect e essa função é ativa só na segunda vez que o useEffect é ativado
     return () => {
       clearInterval(interval)
     }
-  }, [activeCycle])
+  }, [activeCycle, totalSeconds, activeCycleId])
   //data -> são os dados do nosso formulario  
   // NewCycleFormData -> é a interface que defini a tipagem do data
   function handleCreateNewCycle(data: NewCycleFormData) {
@@ -95,9 +118,8 @@ export function Home() {
   }
 
   function handleInterruptCycle() {
-
-    setCycles(
-      cycles.map((cycle) => {
+    setCycles((state) =>
+    state.map((cycle) => {
       if(cycle.id == activeCycleId) {
         return {...cycle, interruptedDate: new Date() }
       } else {
@@ -107,8 +129,6 @@ export function Home() {
     )
     setActiveCycleId(null)
   }
-  // se active cycle estiver com algum id entao pega dentro dele o minutes amount e multiplica por 60 se nao vai ser 0
-  const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
   // esta constante fala se tiver algum valor em activeCycle entao pega o total de segundos e subtrai com o tanto de segundos que ja passou se nao tive nada em active cycle entao é 0
   const currentSeconds = activeCycle ? totalSeconds - amountSecondsPassed : 0
   // dentro do math temos tres utilização importante pra arredondar o floor que arredonda pra baixo o ceil que sempre arredonda pra cima e o round arredonda quando tiver mais de .5
