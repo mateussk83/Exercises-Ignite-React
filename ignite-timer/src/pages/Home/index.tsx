@@ -87,6 +87,7 @@ export function Home() {
 
     setCycles((state) => [...cycles, newCycle])
     setActiveCycleId(newCycle.id)
+    setAmountSecondsPassed(0)
 
     // reset volta para o valor inicial que foi definido la no defaultValues
     reset()
