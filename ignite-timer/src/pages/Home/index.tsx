@@ -31,6 +31,7 @@ interface Cycle {
   task: string
   minutesAmount: number
   startDate: Date
+  interruptedDate?: Date
 }
 
 /* Controlled vs Uncontrolled
@@ -92,6 +93,20 @@ export function Home() {
     // reset volta para o valor inicial que foi definido la no defaultValues
     reset()
   }
+
+  function handleInterruptCycle() {
+
+    setCycles(
+      cycles.map((cycle) => {
+      if(cycle.id == activeCycleId) {
+        return {...cycle, interruptedDate: new Date() }
+      } else {
+        return cycle
+      }
+    }),
+    )
+    setActiveCycleId(null)
+  }
   // se active cycle estiver com algum id entao pega dentro dele o minutes amount e multiplica por 60 se nao vai ser 0
   const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
   // esta constante fala se tiver algum valor em activeCycle entao pega o total de segundos e subtrai com o tanto de segundos que ja passou se nao tive nada em active cycle entao é 0
@@ -123,6 +138,8 @@ export function Home() {
             id="task"
             placeholder="Dê um nome para o seu projeto"
             list="task-suggestions"
+            // desabilitar caso tenho um activeCycle e os !! serve para falar se tiver algum valor dentro vai ser true se nao vai ser false
+            disabled={!!activeCycle}
             // este register ele tras varios parametros para o input como onChange={} onBlur={} neste exemplo o primeiro argumento foi o ID deste input e o segundo parametro diz que vai retornar um numero
             {...register('task')}
           />
@@ -146,6 +163,7 @@ export function Home() {
             min={5}
             // maximo de 60
             max={60}
+            disabled={!!activeCycle}
             // o segundo parametro vai ser igual a true isso quer dizer que o valor retornado vai ser igual a true !
             {...register('minutesAmount', { valueAsNumber: true })}
           />
@@ -166,6 +184,7 @@ export function Home() {
         {activeCycle ? (
           <StopCountDownButton
             type="button"
+            onClick={handleInterruptCycle}
           >
             <HandPalm size={24} />
             Interromper
