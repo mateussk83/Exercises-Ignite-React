@@ -1,7 +1,7 @@
 /* eslint-disable prettier/prettier */
-import { Play } from "phosphor-react";
+import { HandPalm, Play } from "phosphor-react";
 import { useEffect, useState } from "react";
-import { CountdownContainer, FormContainer, HomeContainer, MinutesAmountInput, Separator, StartCountdownButton, TaskInput } from "./styles";
+import { CountdownContainer, FormContainer, HomeContainer, MinutesAmountInput, Separator, StartCountDownButton, StopCountDownButton, TaskInput } from "./styles";
 import { useForm } from 'react-hook-form';
 // o import é um pouco diferente pq precisamos colocar o /zod no final que é a biblioteca de validação que estamos utilizando
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -104,11 +104,11 @@ export function Home() {
   // padStart preenche uma string até um padrão especifico, neste caso diz sempre a variavel de minutes vai ter 2 caracteres se nao tiver ela vai colocar 0 no começo da string até completar ela
   const minutes = String(minutesAmount).padStart(2, '0')
   const seconds = String(secondsAmount).padStart(2, '0')
-// aqui estamos colocando la no title os segundos e os minutos do timer para caso quisermos entrar em outra page ainda sim conseguir ver o timer
+  // aqui estamos colocando la no title os segundos e os minutos do timer para caso quisermos entrar em outra page ainda sim conseguir ver o timer
   useEffect(() => {
     if (activeCycle) {
-    document.title=`${minutes}:${seconds}`
-  }
+      document.title = `${minutes}:${seconds}`
+    }
   }, [minutes, seconds, activeCycle])
   // aqui diz que ele estara em disabled somente quando o task for igual a ''
   const task = watch('task')
@@ -161,13 +161,25 @@ export function Home() {
           <span>{seconds[1]}</span>
         </CountdownContainer>
 
-        <StartCountdownButton
-          disabled={isSubmitDisabled}
-          type="submit"
-        >
-          <Play size={24} />
-          Começar
-        </StartCountdownButton>
+
+
+        {activeCycle ? (
+          <StopCountDownButton
+            type="button"
+          >
+            <HandPalm size={24} />
+            Interromper
+          </StopCountDownButton>
+        ) : (
+          <StartCountDownButton
+            disabled={isSubmitDisabled}
+            type="submit"
+          >
+            <Play size={24} />
+            Começar
+          </StartCountDownButton>
+        )}
+
       </form >
     </HomeContainer>
   )
