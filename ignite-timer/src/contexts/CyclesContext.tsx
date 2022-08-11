@@ -1,7 +1,7 @@
 
-import { createContext, useState } from "react";
+import { Children, createContext, ReactNode, useState } from "react";
 
-interface CreateCycleDate {
+interface CreateCycleData {
   task: string;
   minutesAmount: number;
 }
@@ -17,15 +17,21 @@ interface Cycle {
 
 
 interface CyclesContextType {
+  cycles: Cycle[]
   activeCycle: Cycle | undefined;
   activeCycleId: string | null;
   amountSecondsPassed: number;
 
   markCurrentCycleAsFinished: () => void;
   setSecondsPassed: (seconds: number) => void;
-  createNewCycle: () => void;
+  createNewCycle: (data: CreateCycleData) => void;
+  interruptCurrentCycle: () => void;
 }
 
+interface CyclesContextProviderProps {
+  // ReactNode nada mais é que qualquer html valido
+  children: ReactNode
+}
 
 // createContext serve para cirar um contexto com os components filhos para nao precisar ficar passando parametro para para o countdown la no <CountDown /> podemos criar um contexto que vai receber um {} e dentro do array podemos colocar variaveis que todos os components vão poder usar aquelas variaveis !!!!!!!!!!!!!
 // colocamos CyclesContextType para mostrar oq vamos passar
@@ -33,8 +39,8 @@ interface CyclesContextType {
 export const CyclesContext = createContext({} as CyclesContextType)
 
 
-
-export function CyclesContextProvider() {
+//children é na vdd todo o conteudo que passamos dentro da tag la no app tem a tag router entre o cyclesContextProvider entao temos que colocar children aqui no codigo pra mostrar onde vai ficar
+export function CyclesContextProvider({ children }: CyclesContextProviderProps) {
   
   const [cycles, setCycles] = useState<Cycle[]>([])
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
@@ -62,7 +68,7 @@ export function CyclesContextProvider() {
 
   
   // NewCycleFormData -> é a interface que defini a tipagem do data
-  function createNewCycle(data: NewCycleFormData) {
+  function createNewCycle(data: CreateCycleData) {
     // newCycle: Cycle -> define a tipagem do newCycle com o interface Cycle
     const newCycle: Cycle = {
       // ele pega o Date e do date ele pega a diferença da data atual com a data informada
@@ -75,9 +81,6 @@ export function CyclesContextProvider() {
     setCycles((state) => [...cycles, newCycle])
     setActiveCycleId(newCycle.id)
     setAmountSecondsPassed(0)
-
-    // reset volta para o valor inicial que foi definido la no defaultValues
-    reset()
   }
 
   function interruptCurrentCycle() {
@@ -96,12 +99,18 @@ export function CyclesContextProvider() {
   return (
     <CyclesContext.Provider
           value={{ 
+            cycles,
             activeCycle, 
             activeCycleId, 
             markCurrentCycleAsFinished, 
             amountSecondsPassed,
-            setSecondsPassed 
+            setSecondsPassed,
+            createNewCycle,
+            interruptCurrentCycle
           }}
-        ></CyclesContext.Provider>
+        >
+          {/* aqui o children */}
+          {children}
+        </CyclesContext.Provider>
   )
 }
