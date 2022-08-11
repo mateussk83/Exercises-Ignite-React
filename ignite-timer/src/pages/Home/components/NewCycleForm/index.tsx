@@ -1,31 +1,12 @@
 
 import { FormContainer, MinutesAmountInput, TaskInput } from './styles';
-// como ela nao tem um biblioteca default entao precisamos importar exatamente oq iremos utilizar neste caso vamos importar tudo usando script modules
-import * as zod from 'zod'
-import { useForm } from 'react-hook-form';
-// o import é um pouco diferente pq precisamos colocar o /zod no final que é a biblioteca de validação que estamos utilizando
-import { zodResolver } from '@hookform/resolvers/zod';
-
-// aqui é a validação do formulario neste caso como o data que recebemos la na funçaõ handleCreateNewCycle recebe um object com dois parametros a task e o minutesAmount
-const newCycleFormValidationSchema = zod.object({
-  // aqui falamos que a task tem que ser uma string e tem que ter no minimo é um caracter e caso nao tiver mostrar a mensagem'Informe a tarefa'
-  task: zodResolver.string().min(1, 'Informe a tarefa'),
-  minutesAmount: zod.number().min(5).max(60),
-})
+import { useFormContext } from 'react-hook-form';
+import { useContext } from 'react';
+import { CyclesContext } from '../..';
 
 export function NewCycleForm() {
-  // quando utilizamos o useForm é como se estiverssemos criando um novo formulario e o const { é oq queremos estrair deste formulario }
-  // register -> ele vai adicionar um input no formulario
-  // watch -> eu consigo com este parametro watch ficar monitorando o input que eu quiser em tempo real como o useState
-  // <> dentro dele colocaremos a interface que passa a tipagem
-  const { register, handleSubmit, watch, reset } = useForm<NewCycleFormData>({
-    resolver: zodResolver(newCycleFormValidationSchema),
-    // useForm tbm pode configurar o valor inicial que a variavel vai ter!
-    defaultValues: {
-      task: '',
-      minutesAmount: 0,
-    }
-  })
+  const { activeCycle} = useContext(CyclesContext)
+  const { register } = useFormContext()
 
   return (
     <FormContainer>

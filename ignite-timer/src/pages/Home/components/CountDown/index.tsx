@@ -6,8 +6,13 @@ import { CountdownContainer, Separator } from "./styles";
 
 
 export function CountDown() {
-  const { activeCycle, activeCycleId, markCurrentCycleAsFinished } = useContext(CyclesContext)
-  const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
+  const {
+    activeCycle,
+    activeCycleId,
+    markCurrentCycleAsFinished,
+    amountSecondsPassed,
+    setSecondsPassed
+  } = useContext(CyclesContext)
   // se active cycle estiver com algum id entao pega dentro dele o minutes amount e multiplica por 60 se nao vai ser 0
   const totalSeconds = activeCycle ? activeCycle.minutesAmount * 60 : 0
 
@@ -36,19 +41,19 @@ export function CountDown() {
     if (activeCycle) {
       interval = setInterval(() => {
         const secondsDifference = differenceInSeconds(
-          new Date(), 
+          new Date(),
           activeCycle.startDate
         )
 
         if (secondsDifference >= totalSeconds) {
           markCurrentCycleAsFinished()
 
-          setAmountSecondsPassed(totalSeconds)
+          setSecondsPassed(totalSeconds)
 
           clearInterval(interval)
         } else {
-        // differenceInfSeconds é uma função do date-fns que permite subtrair em segundo a diferença das duas datas
-        setAmountSecondsPassed(secondsDifference)
+          // differenceInfSeconds é uma função do date-fns que permite subtrair em segundo a diferença das duas datas
+          setSecondsPassed(secondsDifference)
         }
       }, 1000)
     }
@@ -56,15 +61,21 @@ export function CountDown() {
     return () => {
       clearInterval(interval)
     }
-  }, [activeCycle, totalSeconds, activeCycleId, markCurrentCycleAsFinished()])
+  }, [
+    activeCycle,
+    totalSeconds,
+    activeCycleId,
+    markCurrentCycleAsFinished,
+    setSecondsPassed
+  ])
   return (
     <CountdownContainer>
-    <span>{minutes[0]}</span>
-    <span>{minutes[1]}</span>
-    <Separator>:</Separator>
-    <span>{seconds[0]}</span>
-    <span>{seconds[1]}</span>
-  </CountdownContainer>
+      <span>{minutes[0]}</span>
+      <span>{minutes[1]}</span>
+      <Separator>:</Separator>
+      <span>{seconds[0]}</span>
+      <span>{seconds[1]}</span>
+    </CountdownContainer>
 
   )
 }
