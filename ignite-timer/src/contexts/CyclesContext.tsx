@@ -1,5 +1,6 @@
 
-import { Children, createContext, ReactNode, useState } from "react";
+import { Action } from "history";
+import { createContext, ReactNode, useState, useReducer } from "react";
 
 interface CreateCycleData {
   task: string;
@@ -41,8 +42,23 @@ export const CyclesContext = createContext({} as CyclesContextType)
 
 //children é na vdd todo o conteudo que passamos dentro da tag la no app tem a tag router entre o cyclesContextProvider entao temos que colocar children aqui no codigo pra mostrar onde vai ficar
 export function CyclesContextProvider({ children }: CyclesContextProviderProps) {
+  // useReducer tem dois parametros o primeiro é uma função e o segundo é o valor inicial da variavel 
+  // geralmente utilizamos o useReducer quando temos uma informação mto complexa que tem muita tratativa
+  //  primeiro parametro state que vai ser o estado e a segunda vai ser uma ação como add ou reducer e etc
+  // a gente coloca o nome dispach quando queremos falar que uma ação vai disparar algo
+  const [cycles, dispatch ] = useReducer((state: Cycle[], action: any) => { 
+    console.log(state)
+    console.log(action)
+
+    if (action.type == 'ADD_NEW_CYCLE') {
+      return[...state, action.payload.newCycle]
+    }
+    return state
+  }, [])
+
   
-  const [cycles, setCycles] = useState<Cycle[]>([])
+
+
   const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
 
@@ -51,15 +67,23 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
 
   
   function markCurrentCycleAsFinished() {
-    setCycles((state) =>
-      state.map((cycle) => {
-        if (cycle.id == activeCycleId) {
-          return { ...cycle, finishedDate: new Date() }
-        } else {
-          return cycle
-        }
-      }),
-    )
+    dispatch({
+      // type a ação que voce esta querendo fazer
+      type: 'MARK_CURRENT_CYCLE_AS_FINISHED',
+      // variavel que vai acontecer a ação
+      payload: {
+        data: activeCycleId,
+      }
+    })
+    // setCycles((state) =>
+    //   state.map((cycle) => {
+    //     if (cycle.id == activeCycleId) {
+    //       return { ...cycle, finishedDate: new Date() }
+    //     } else {
+    //       return cycle
+    //     }
+    //   }),
+    // )
   }
 
   function setSecondsPassed(seconds: number) {
@@ -77,22 +101,37 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
       minutesAmount: data.minutesAmount,
       startDate: new Date()
     }
-
-    setCycles((state) => [...cycles, newCycle])
+    dispatch({
+      // type a ação que voce esta querendo fazer
+      type: 'ADD_NEW_CYCLE',
+      // variavel que vai acontecer a ação
+      payload: {
+        newCycle,
+      }
+    })
+    // setCycles((state) => [...cycles, newCycle])
     setActiveCycleId(newCycle.id)
     setAmountSecondsPassed(0)
   }
 
   function interruptCurrentCycle() {
-    setCycles((state) =>
-      state.map((cycle) => {
-        if (cycle.id == activeCycleId) {
-          return { ...cycle, interruptedDate: new Date() }
-        } else {
-          return cycle
-        }
-      }),
-    )
+    dispatch({
+      // type a ação que voce esta querendo fazer
+      type: 'INTERRUPT_CURRENT_CYCLE',
+      // variavel que vai acontecer a ação
+      payload: {
+        activeCycleId,
+      }
+    })
+    // setCycles((state) =>
+    //   state.map((cycle) => {
+    //     if (cycle.id == activeCycleId) {
+    //       return { ...cycle, interruptedDate: new Date() }
+    //     } else {
+    //       return cycle
+    //     }
+    //   }),
+    // )
     setActiveCycleId(null)
   }
 
