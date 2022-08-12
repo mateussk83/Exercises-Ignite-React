@@ -1,4 +1,4 @@
-/* eslint-disable prettier/prettier */
+
 import { HandPalm, Play } from "phosphor-react";
 import { useContext } from "react";
 import { HomeContainer, StartCountDownButton, StopCountDownButton } from "./styles";
@@ -27,12 +27,12 @@ interface NewCycleFormData {
   minutesAmount: number;
 }
 */
-type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema> 
+type NewCycleFormData = zod.infer<typeof newCycleFormValidationSchema>
 
 export function Home() {
 
-  const  { createNewCycle, interruptCurrentCycle, activeCycle } = useContext(CyclesContext)
-   // quando utilizamos o useForm é como se estiverssemos criando um novo formulario e o const { é oq queremos estrair deste formulario }
+  const { createNewCycle, interruptCurrentCycle, activeCycle } = useContext(CyclesContext)
+  // quando utilizamos o useForm é como se estiverssemos criando um novo formulario e o const { é oq queremos estrair deste formulario }
   // register -> ele vai adicionar um input no formulario
   // watch -> eu consigo com este parametro watch ficar monitorando o input que eu quiser em tempo real como o useState
   // <> dentro dele colocaremos a interface que passa a tipagem
@@ -46,7 +46,7 @@ export function Home() {
   })
 
   const { handleSubmit, watch, reset } = newCycleForm
-// quando utilizamos o handle na frente da função é para usar diretamento no evento!!!
+  // quando utilizamos o handle na frente da função é para usar diretamento no evento!!!
   function handleCreateNewCycle(data: NewCycleFormData) {
     createNewCycle(data)
     reset()
@@ -63,11 +63,11 @@ export function Home() {
     <HomeContainer>
       <form onSubmit={handleSubmit(handleCreateNewCycle)} action="">
 
-      
-          <FormProvider {...newCycleForm}>
+
+        <FormProvider {...newCycleForm}>
           <NewCycleForm />
-          </FormProvider>
-          <CountDown />
+        </FormProvider>
+        <CountDown />
 
 
         {activeCycle ? (
