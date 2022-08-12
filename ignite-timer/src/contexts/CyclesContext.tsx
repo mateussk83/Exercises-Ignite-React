@@ -1,5 +1,6 @@
+import { differenceInSeconds } from "date-fns";
 import { createContext, ReactNode, useState, useReducer, useEffect } from "react";
-import { addNewCycleAction, MarkCurrentCycleAsFinishedAction } from "../reducers/cycles/action";
+import { addNewCycleAction, InterruptCurrentCycleAction, MarkCurrentCycleAsFinishedAction } from "../reducers/cycles/action";
 import { Cycle, cyclesReducer } from "../reducers/cycles/reducer";
 
 interface CreateCycleData {
@@ -38,40 +39,54 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
   // a gente coloca o nome dispach quando queremos falar que uma ação vai disparar algo
   // neste caso estamos pegando esta primeira função la do reducers cycles.ts
   // o use Reducer pode receber uma função como 3 parametro ele é disparado quando for iniciar a pagina pra pegar dados de algum outro lugar
-  const [cyclesState, dispatch ] = useReducer(cyclesReducer, {
-    // no ultimo parametro do useReducer defini o valor inicial da variavel
-    cycles: [],
-    activeCycleId: null,
-  }, () => {
-    // cria uma variavel que vai pegar o item com o nome @ignite-timer... 
-    const storedStateAsJSON = localStorage.getItem('@ignite-timer:cycles-state-1.0.0');
-    // se achar algo dentro dele retorna este json 
-    if (storedStateAsJSON) {
-      return JSON.parse(storedStateAsJSON)
+  const [cyclesState, dispatch] = useReducer(cyclesReducer,
+    {
+      // no ultimo parametro do useReducer defini o valor inicial da variavel
+      cycles: [],
+      activeCycleId: null,
+    },
+    () => {
+      const storedStateAsJSON = localStorage.getItem('@ignite-timer:cycles-state-1.0.0')
+    
+      if (storedStateAsJSON) {
+        return JSON.parse(storedStateAsJSON)
+      }
+    }
+    )
+
+  const { cycles, activeCycleId } = cyclesState
+  // aqui ele diz que vai em cycles e procurar o cycle que tenho o id igual ao activeCycleId
+  const activeCycle = cycles.find((cycle) => cycle.id == activeCycleId)
+
+  const [amountSecondsPassed, setAmountSecondsPassed] = useState(() => {
+    if (activeCycle) {
+      return differenceInSeconds(
+        new Date(),
+        // ele transforma a string em uma data se ja for uma data ele nao vai fazer nada 
+        new Date(activeCycle.startDate)
+      )
     }
 
-  const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
+    return 0
+  })
+
 
   useEffect(() => {
     const stateJSON = JSON.stringify(cyclesState)
-    // sempre colocar o @ depois o nome do projeto : e o que voce esta salvando nele quando for prefixo no localStorage- versao
+
     localStorage.setItem('@ignite-timer:cycles-state-1.0.0', stateJSON)
   }, [cyclesState])
 
 
-  const { cycles, activeCycleId } = cyclesState
-  // aqui ele diz que vai em cycles e procurar o cycle que tenho o id igual ao activeCycleId
-  const activeCycle = cycles.find(cycle => cycle.id == activeCycleId)
-  
   function markCurrentCycleAsFinished() {
-    dispatch(MarkCurrentCycleAsFinishedAction)
+    dispatch(MarkCurrentCycleAsFinishedAction())
   }
 
   function setSecondsPassed(seconds: number) {
     setAmountSecondsPassed(seconds)
   }
 
-  
+
   // NewCycleFormData -> é a interface que defini a tipagem do data
   function createNewCycle(data: CreateCycleData) {
     // newCycle: Cycle -> define a tipagem do newCycle com o interface Cycle
@@ -88,24 +103,24 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
   }
 
   function interruptCurrentCycle() {
-    dispatch(interruptCurrentCycle)
+    dispatch(InterruptCurrentCycleAction())
   }
-      
+
   return (
     <CyclesContext.Provider
-          value={{ 
-            cycles,
-            activeCycle, 
-            activeCycleId, 
-            markCurrentCycleAsFinished, 
-            amountSecondsPassed,
-            setSecondsPassed,
-            createNewCycle,
-            interruptCurrentCycle
-          }}
-        >
-          {/* aqui o children */}
-          {children}
-        </CyclesContext.Provider>
+      value={{
+        cycles,
+        activeCycle,
+        activeCycleId,
+        markCurrentCycleAsFinished,
+        amountSecondsPassed,
+        setSecondsPassed,
+        createNewCycle,
+        interruptCurrentCycle
+      }}
+    >
+      {/* aqui o children */}
+      {children}
+    </CyclesContext.Provider>
   )
 }

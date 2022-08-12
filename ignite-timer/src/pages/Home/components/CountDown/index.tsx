@@ -42,7 +42,8 @@ export function CountDown() {
       interval = setInterval(() => {
         const secondsDifference = differenceInSeconds(
           new Date(),
-          activeCycle.startDate
+          // ele transforma a string em uma data se ja for uma data ele nao vai fazer nada 
+          new Date(activeCycle.startDate)
         )
 
         if (secondsDifference >= totalSeconds) {

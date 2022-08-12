@@ -24,7 +24,7 @@ export function cyclesReducer(state: CyclesState, action: any) {
         // o primeiro parametro é a variavel que queremos mudar e o segundo passamos draft que é um rascunho do que vai acontecer com a variavel este draft tbm tem todos os valores do primeiro parametro
         return produce(state, draft => {
           // push adiciona um ou mais elementos ao final do array e retorna o novo comprimento do mesmo
-          draft.cycles.push(action.payload.newCycle);
+          draft.cycles.push(action.payload.newCycle)
           draft.activeCycleId = action.payload.newCycle.id
         })
 
