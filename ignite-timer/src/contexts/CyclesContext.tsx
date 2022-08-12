@@ -1,5 +1,3 @@
-
-import { Action } from "history";
 import { createContext, ReactNode, useState, useReducer } from "react";
 import { addNewCycleAction, MarkCurrentCycleAsFinishedAction } from "../reducers/cycles/action";
 import { Cycle, cyclesReducer } from "../reducers/cycles/reducer";
