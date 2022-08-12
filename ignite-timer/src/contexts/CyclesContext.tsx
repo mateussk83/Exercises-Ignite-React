@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useState, useReducer } from "react";
+import { createContext, ReactNode, useState, useReducer, useEffect } from "react";
 import { addNewCycleAction, MarkCurrentCycleAsFinishedAction } from "../reducers/cycles/action";
 import { Cycle, cyclesReducer } from "../reducers/cycles/reducer";
 
@@ -37,13 +37,27 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
   //  primeiro parametro state que vai ser o estado e a segunda vai ser uma ação como add ou reducer e etc
   // a gente coloca o nome dispach quando queremos falar que uma ação vai disparar algo
   // neste caso estamos pegando esta primeira função la do reducers cycles.ts
+  // o use Reducer pode receber uma função como 3 parametro ele é disparado quando for iniciar a pagina pra pegar dados de algum outro lugar
   const [cyclesState, dispatch ] = useReducer(cyclesReducer, {
     // no ultimo parametro do useReducer defini o valor inicial da variavel
     cycles: [],
     activeCycleId: null,
-  })
+  }, () => {
+    // cria uma variavel que vai pegar o item com o nome @ignite-timer... 
+    const storedStateAsJSON = localStorage.getItem('@ignite-timer:cycles-state-1.0.0');
+    // se achar algo dentro dele retorna este json 
+    if (storedStateAsJSON) {
+      return JSON.parse(storedStateAsJSON)
+    }
 
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
+
+  useEffect(() => {
+    const stateJSON = JSON.stringify(cyclesState)
+    // sempre colocar o @ depois o nome do projeto : e o que voce esta salvando nele quando for prefixo no localStorage- versao
+    localStorage.setItem('@ignite-timer:cycles-state-1.0.0', stateJSON)
+  }, [cyclesState])
+
 
   const { cycles, activeCycleId } = cyclesState
   // aqui ele diz que vai em cycles e procurar o cycle que tenho o id igual ao activeCycleId
