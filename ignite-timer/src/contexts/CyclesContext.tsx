@@ -16,6 +16,12 @@ interface Cycle {
   finishedDate?: Date
 }
 
+interface CyclesState {
+  cycles: Cycle[]
+  activeCycleId: string | null
+
+}
+
 
 interface CyclesContextType {
   cycles: Cycle[]
@@ -46,25 +52,56 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
   // geralmente utilizamos o useReducer quando temos uma informação mto complexa que tem muita tratativa
   //  primeiro parametro state que vai ser o estado e a segunda vai ser uma ação como add ou reducer e etc
   // a gente coloca o nome dispach quando queremos falar que uma ação vai disparar algo
-  const [cycles, dispatch ] = useReducer((state: Cycle[], action: any) => { 
-    console.log(state)
-    console.log(action)
+  const [cyclesState, dispatch ] = useReducer((state: CyclesState, action: any) => { 
 
-    if (action.type == 'ADD_NEW_CYCLE') {
-      return[...state, action.payload.newCycle]
-    }
-    return state
-  }, [])
-
+    // switch é a mesma coisa de ter varios if entao se o action.type == 'ADD_NEW_CYCLE' vai ir para o case 1 e assim por diante
+    switch(action.type) {
+      case 'ADD_NEW_CYCLE':
+        return {
+          ...state, 
+          cycles: [...state.cycles, action.payload.newCycle],
+          activeCycleId: action.payload.newCycle.id,
   
+        }
+      case 'INTERRUPT_CURRENT_CYCLE':
+        return {
+          ...state,
+          cycles: state.cycles.map((cycle) => {
+            if (cycle.id == state.activeCycleId) {
+              return { ...cycle, interruptedDate: new Date() }
+            } else {
+              return cycle
+            }
+          }),
+          activeCycleId: null,
+      }
+      case 'MARK_CURRENT_CYCLE_AS_FINISHED':
+        return {
+          ...state,
+          cycles: state.cycles.map((cycle) => {
+            if (cycle.id == state.activeCycleId) {
+              return { ...cycle, finishedDate: new Date() }
+            } else {
+              return cycle
+            }
+          }),
+          activeCycleId: null,
+        }
+      default:
+        return state
+    }
 
+    }, {
+    // no ultimo parametro do useReducer defini o valor inicial da variavel
+    cycles: [],
+    activeCycleId: null,
+  })
 
-  const [activeCycleId, setActiveCycleId] = useState<string | null>(null)
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(0)
 
+  const { cycles, activeCycleId } = cyclesState
   // aqui ele diz que vai em cycles e procurar o cycle que tenho o id igual ao activeCycleId
   const activeCycle = cycles.find(cycle => cycle.id == activeCycleId)
-
   
   function markCurrentCycleAsFinished() {
     dispatch({
@@ -75,15 +112,6 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
         data: activeCycleId,
       }
     })
-    // setCycles((state) =>
-    //   state.map((cycle) => {
-    //     if (cycle.id == activeCycleId) {
-    //       return { ...cycle, finishedDate: new Date() }
-    //     } else {
-    //       return cycle
-    //     }
-    //   }),
-    // )
   }
 
   function setSecondsPassed(seconds: number) {
@@ -110,7 +138,6 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
       }
     })
     // setCycles((state) => [...cycles, newCycle])
-    setActiveCycleId(newCycle.id)
     setAmountSecondsPassed(0)
   }
 
@@ -123,18 +150,8 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
         activeCycleId,
       }
     })
-    // setCycles((state) =>
-    //   state.map((cycle) => {
-    //     if (cycle.id == activeCycleId) {
-    //       return { ...cycle, interruptedDate: new Date() }
-    //     } else {
-    //       return cycle
-    //     }
-    //   }),
-    // )
-    setActiveCycleId(null)
   }
-
+      
   return (
     <CyclesContext.Provider
           value={{ 
