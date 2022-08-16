@@ -54,8 +54,6 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
       }
     }
   )
-
-
   const { cycles, activeCycleId } = cyclesState
   // aqui ele diz que vai em cycles e procurar o cycle que tenho o id igual ao activeCycleId
   const activeCycle = cycles.find((cycle) => cycle.id == activeCycleId)
@@ -89,6 +87,9 @@ export function CyclesContextProvider({ children }: CyclesContextProviderProps) 
     setAmountSecondsPassed(seconds)
   }
 
+
+
+  
 
   // NewCycleFormData -> é a interface que defini a tipagem do data
   function createNewCycle(data: CreateCycleData) {
