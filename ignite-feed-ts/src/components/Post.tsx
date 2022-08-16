@@ -168,6 +168,9 @@ export function Post({ author, publishedAt, content }: PostProps) {
 
       <div className={styles.commentList}>
 
+
+
+
         {comments.map(comment => {
           return (<Comment
             content={comment}
