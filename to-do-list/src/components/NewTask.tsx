@@ -26,6 +26,10 @@ export function NewTask({ onAddTask }: TaskProps, event: ChangeEvent<HTMLTextAre
     setTask(event.target.value);
   }
 
+
+
+  
+
   const isNewTaskEmpty = task.length == 0;
   return (
     <div className={styles.task}>
